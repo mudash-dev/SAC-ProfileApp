@@ -4,16 +4,22 @@ package com.example.composeschoolprofile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -49,6 +55,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Student(school: String) {
     Column {
@@ -58,7 +65,7 @@ fun Student(school: String) {
                 .fillMaxWidth()
                 .background(color = Color.White)
         ) {
-            Image(painter = painterResource(id = R.drawable.unilogo), contentDescription ="SAC" )
+            Image(painter = painterResource(id = R.drawable.unilogo), contentDescription ="SAC" ,Modifier.background(color = Color.White))
             Text(
                 text = school,
                 style = MaterialTheme.typography.titleMedium,
@@ -83,13 +90,18 @@ fun Student(school: String) {
 
             )
         }
-
+        Spacer(modifier = Modifier.height(4.dp))
         //Collect data
-        Row (
+        Column (
             modifier = Modifier
                 .fillMaxWidth()
                 ){
+            Text(text = "Fill in your Details below:",
+                style = MaterialTheme.typography.titleSmall,
+                color = Color.Green
 
+                )
+            Spacer(modifier = Modifier.height(5.dp))
             var textname by remember {
                 mutableStateOf(TextFieldValue(" "))
             }
@@ -101,13 +113,75 @@ fun Student(school: String) {
                 }
 
             )
+            Spacer(modifier = Modifier.height(4.dp))
+            var regno by remember {
+                mutableStateOf(TextFieldValue(" "))
+            }
+            OutlinedTextField(
+                value = regno,
+                label = { Text(text = "Enter Registration Number") },
+                onValueChange = { newText ->
+                    regno = newText
+                }
+
+            )
+            val course by remember {
+                mutableStateOf(TextFieldValue(" "))
+            }
+            OutlinedTextField(
+                value = course,
+                label = { Text(text = "Enter Your Course of Study") },
+                onValueChange = { newText ->
+                    regno = newText
+                }
+
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+            Row() {
+                Text(text = "Choose Your Department:",
+                    style = MaterialTheme.typography.titleSmall
+                    )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                val radioOptions = listOf(" COPAS ", " COHES ", " SCIT ")
+                radioOptions.forEach { label ->
+                    radioButton()
+                    Text(
+                        text = label,
+                        color = Color.Black
+                    )
+                }
+            }
+            }
+        Spacer(modifier = Modifier.width(4.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center ,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Button(
+                onClick = {
+
+                },
+                border = BorderStroke(1.dp, Color.Blue),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+            ) {
+                Text(text = "Save", color = Color.Black)
+            }
+        }
+
 
         }
     }
 
 
-}
 
+fun radioButton() {
+
+}
 
 @Preview(showBackground = true)
 @Composable
