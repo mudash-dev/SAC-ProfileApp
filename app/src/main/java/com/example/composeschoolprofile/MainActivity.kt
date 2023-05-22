@@ -2,6 +2,7 @@ package com.example.composeschoolprofile
 
 //import androidx.compose.ui.tooling.data.EmptyGroup.name
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -32,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -138,7 +140,7 @@ fun Student(school: String) {
             )
 
             Spacer(modifier = Modifier.height(4.dp))
-            Row() {
+            Row {
                 Text(text = "Choose Your Department:",
                     style = MaterialTheme.typography.titleSmall
                     )
@@ -162,14 +164,16 @@ fun Student(school: String) {
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
+            val context = LocalContext.current
             Button(
                 onClick = {
+                    Toast.makeText(context, "You profile has been saved.", Toast.LENGTH_SHORT).show()
 
                 },
                 border = BorderStroke(1.dp, Color.Blue),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
             ) {
-                Text(text = "Save", color = Color.Black)
+                Text(text = "Save",color = Color.Black)
             }
         }
 
