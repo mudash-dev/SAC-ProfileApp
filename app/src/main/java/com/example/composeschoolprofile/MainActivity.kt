@@ -80,8 +80,7 @@ fun Navigation() {
                  navArgument("textname"){type = NavType.StringType},
                  navArgument("regno"){type = NavType.StringType},
                  navArgument("schoolemail"){type = NavType.StringType},
-                 navArgument("course"){type = NavType.StringType},
-                // navArgument("selecteditem"){type = NavType.StringType}
+                 navArgument("course"){type = NavType.StringType}
              )
         )
         { entry ->
@@ -90,7 +89,7 @@ fun Navigation() {
                 regno = entry.arguments?.getString("regno"),
                 schoolemail = entry.arguments?.getString("schoolemail"),
                 course = entry.arguments?.getString("course"),
-                navController = navController
+                navController
             )
         }
     }
