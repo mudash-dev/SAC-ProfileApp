@@ -277,7 +277,6 @@ fun ViewProfile(
     navController: NavController
 ) {
     Card(
-
         modifier = Modifier
             .padding((16.dp)
             )
@@ -287,6 +286,11 @@ fun ViewProfile(
                 .padding(16.dp)
         )
         {
+            Text(text = textname.toString())
+            Text(text = regno.toString())
+            Text(text = schoolemail.toString())
+            Text(text = course.toString())
+
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 horizontalArrangement = Arrangement.Center,
