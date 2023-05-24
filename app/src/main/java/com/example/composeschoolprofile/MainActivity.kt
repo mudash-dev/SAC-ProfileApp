@@ -23,8 +23,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -42,9 +42,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.composeschoolprofile.ui.theme.ComposeSchoolProfileTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,21 +62,45 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    Student("Scholars Association College")
-
+                    Navigation()
                 }
             }
         }
     }
 }
 
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = Screen.Home.route){
+        composable(Screen.Home.route) { Home(navController)}
+        composable(
+            Screen.ViewProfile.route + "/{textname}/{regno}/{schoolemail}/{course} ",
+             arguments = listOf(
+                 navArgument("textname"){type = NavType.StringType},
+                 navArgument("regno"){type = NavType.StringType},
+                 navArgument("schoolemail"){type = NavType.StringType},
+                 navArgument("course"){type = NavType.StringType},
+                // navArgument("selecteditem"){type = NavType.StringType}
+             )
+        )
+        { entry ->
+            ViewProfile(
+                textname = entry.arguments?.getString("textname"),
+                regno = entry.arguments?.getString("regno"),
+                schoolemail = entry.arguments?.getString("schoolemail"),
+                course = entry.arguments?.getString("course"),
+                navController = navController
+            )
+        }
+    }
+}
 
-// Screen1 to create Profile
-val college:String = "Scholars Association College"
+
+const val college:String = "Scholars Association College"
 
 @Composable
-fun Student(college:String) {
+fun Home(navController: NavController) {
     Column {
         //header
         Row(
@@ -173,7 +203,7 @@ fun Student(college:String) {
 
             )
             Spacer(modifier = Modifier.height(4.dp))
-            //choose deptmartment
+            //choose department
             Row {
                 Text(
                     text = "Choose Your Department:",
@@ -223,7 +253,10 @@ fun Student(college:String) {
             val context = LocalContext.current
             Button(
                 onClick = {
-                    Toast.makeText(context, "You profile has been saved.", Toast.LENGTH_SHORT).show() },
+                    Toast.makeText(context, "You profile has been saved.", Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.ViewProfile.withArgs(textname,regno,schoolemail,course))
+
+                },
                 border = BorderStroke(1.dp, Color.Blue),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
             ){
@@ -236,12 +269,41 @@ fun Student(college:String) {
     }
 }
 
-
-@Preview(showBackground = true)
 @Composable
-fun StudentPreviewScreen() {
-    ComposeSchoolProfileTheme {
-        Student(college = "Scholars Association College")
+fun ViewProfile(
+    textname: String?,
+    regno: String?, schoolemail: String?,
+    course: String?,
+    navController: NavController
+) {
+    Card(
+
+        modifier = Modifier
+            .padding((16.dp)
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        )
+        {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            )
+            { Button(
+                onClick = {
+                    navController.popBackStack(Screen.Home.route,false)
+                },
+                border = BorderStroke(1.dp, Color.Blue),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+            ){
+                Text(text = "Edit", color = Color.Black)
+            }
+            }
+        }
     }
 }
-
